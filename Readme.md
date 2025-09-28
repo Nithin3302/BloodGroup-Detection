@@ -41,25 +41,32 @@ venv\Scripts\activate
 3. **Install Dependencies**
 ```batch
 # Ensure you're in the project directory
-```C:\Users\YourUsername\Projects\bloodgroup_detection
+cd C:\Users\YourUsername\Projects\bloodgroup_detection
 
-## 📁 Project Structurey version first
+# Install specific numpy version first
 pip install numpy==1.23.5
+
+# Install remaining dependencies
+pip install -r requirements.txt
 ```
-bloodgroup_detection/ependencies
-├── data/ll -r requirements.txt
+
+## 📁 Project Structure
+
+```
+bloodgroup_detection/
+├── data/
 │   └── dataset_blood_group/    # Dataset folder
 │       ├── A+/
-│       ├── A-/tructure
+│       ├── A-/
 │       ├── B+/
 │       ├── B-/
-│       ├── AB+/tion/
+│       ├── AB+/
 │       ├── AB-/
-│       ├── O+/_blood_group/    # Dataset folder
+│       ├── O+/
 │       └── O-/
-├── models/ A-/
+├── models/
 │   └── blood_group_model.h5    # Trained model
-├── src/├── B-/
+├── src/
 │   ├── app.py                  # Streamlit interface
 │   ├── predict.py              # Prediction logic
 │   ├── train.py               # Training script
@@ -67,18 +74,34 @@ bloodgroup_detection/ependencies
 │   ├── model.py               # Model architecture
 │   └── utils.py               # Helper functions
 ├── static/
-│   └── model_performance.png   # Performance graphse
-├── requirements.txt            # Prediction logic
-└── README.md.py               # Training script
-``` ├── data_processing.py     # Data utilities
-│   ├── model.py               # Model architecture
-## 🚀 Running the Application  # Helper functions
-├── static/
-1. **Train Model** (optional if model exists) 
-- streamlit run src/app.py    
-- ctrl + C in terminal to exit
+│   └── model_performance.png   # Performance graphs
+├── requirements.txt
+└── README.md
+```
+
 ## 🚀 Running the Application
 
-1. **Train Model** (optional if model exists)
-- streamlit run src/app.py    
-- ctrl + C in terminal to exit
+1. **Start the Web Interface**
+```batch
+streamlit run src/app.py
+```
+
+2. **Exit the Application**
+```batch
+# Press Ctrl + C in terminal to exit
+```
+
+## 💡 Usage
+
+1. Upload a fingerprint image (supported formats: BMP, JPG, PNG)
+2. View the prediction results and confidence scores
+3. Check detailed probability distribution for all blood groups
+
+## ⚙️ System Requirements
+
+- CPU Mode: Will work but slower
+- GPU Mode: Automatically used if NVIDIA GPU available
+- Memory Usage: ~2GB minimum during prediction
+- Storage: ~500MB for model and dependencies
+
+For any issues or questions, please open an issue in the repository.

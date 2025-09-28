@@ -1,0 +1,6 @@
+{
+    "accuracy": 85.5,
+    "val_accuracy": 82.3,
+    "loss": 0.4521,
+    "val_loss": 0.5234
+}

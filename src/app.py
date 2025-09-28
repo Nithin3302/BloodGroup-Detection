@@ -15,28 +15,86 @@ st.set_page_config(
     layout="wide",
 )
 
-# Apply custom CSS for dark theme with green accents
+# Apply custom CSS for red theme
 st.markdown("""
     <style>
         .stApp {
-            background-color: #0E1117;
+            background-color: #000000;  /* Changed to pure black */
             color: #FAFAFA;
         }
         .stButton>button {
-            background-color: #00FF00;
-            color: black;
+            background-color: #FF0000;
+            color: white;
+            padding: 0.5rem !important;
         }
         .stProgress .st-bo {
-            background-color: #00FF00;
+            background-color: #FF0000;
         }
         .success {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            background-color: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00FF00;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid #FF0000;
+            margin: 0.5rem 0;
         }
-        h1, h2, h3 {
-            color: #00FF00 !important;
+        h1 {
+            color: #FF0000 !important;
+            font-size: 2rem !important;
+            margin: 0.5rem 0 !important;
+            text-align: center !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        h2 {
+            color: #FF0000 !important;
+            font-size: 1.2rem !important;
+            margin: 0.4rem 0 !important;
+        }
+        h3 {
+            color: #FF0000 !important;
+            font-size: 1rem !important;
+            margin: 0.3rem 0 !important;
+        }
+        .metric-container {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            text-align: center;
+            margin: 0.2rem;
+        }
+        .metric-value {
+            font-size: 1.2rem;
+            color: #FF0000;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 0.7rem;
+            color: #FFB6B6;
+            text-transform: uppercase;
+        }
+        .stProgress {
+            height: 0.3rem !important;
+        }
+        
+        /* Remove any default padding/margins around file uploader */
+        .stFileUploader {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        /* Hide the default file uploader border */
+        .uploadedFile {
+            border: none !important;
+            background: none !important;
+        }
+        
+        /* Custom styling for file uploader */
+        .css-1kovmik {
+            background-color: transparent !important;
+        }
+        
+        .css-1kmuo5j {
+            background-color: rgba(255, 0, 0, 0.1) !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -73,7 +131,7 @@ def preprocess_image(image):
         raise ValueError("Invalid image format")
 
 def main():
-    st.title("🩸 Blood Group Detection from Fingerprint")
+    st.title("🩸 Blood Group Detection")
     
     # Load model and metrics
     model = load_model()
@@ -82,79 +140,78 @@ def main():
     if model is None:
         return
     
-    # Display model metrics in a nice format
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Model Accuracy", f"{metrics['accuracy']:.2f}%" if metrics else "N/A")
-    with col2:
-        st.metric("Validation Accuracy", f"{metrics['val_accuracy']:.2f}%" if metrics else "N/A")
-    with col3:
-        st.metric("Training Loss", f"{metrics['loss']:.4f}" if metrics else "N/A")
+    # Redesigned metrics display
+    st.markdown("""
+        <div style='display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;'>
+            <div class='metric-container'>
+                <div class='metric-value'>{:.1f}%</div>
+                <div class='metric-label'>Accuracy</div>
+            </div>
+            <div class='metric-container'>
+                <div class='metric-value'>{:.1f}%</div>
+                <div class='metric-label'>Validation</div>
+            </div>
+            <div class='metric-container'>
+                <div class='metric-value'>{:.2f}</div>
+                <div class='metric-label'>Loss</div>
+            </div>
+        </div>
+    """.format(
+        metrics['accuracy'] if metrics else 0,
+        metrics['val_accuracy'] if metrics else 0,
+        metrics['loss'] if metrics else 0
+    ), unsafe_allow_html=True)
     
-    # Display performance graph
+    # Smaller performance graph
     if os.path.exists('static/model_performance.png'):
-        st.subheader("📈 Model Performance")
-        st.image('static/model_performance.png')
+        with st.expander("📈 Model Performance", expanded=False):
+            st.image('static/model_performance.png')
     
-    # File upload section
-    st.subheader("🔍 Upload Fingerprint Image")
-    uploaded_file = st.file_uploader("Choose a fingerprint image...", type=["bmp", "jpg", "png"])
+    # File upload with minimal styling
+    uploaded_file = st.file_uploader("Upload Fingerprint", type=["bmp", "jpg", "png"], 
+                                   label_visibility="collapsed")
     
     if uploaded_file is not None:
         try:
-            # Create two columns for image and prediction
             col1, col2 = st.columns(2)
             
-            # Display uploaded image with reduced size
+            # Display image without extra border div
             image = Image.open(uploaded_file)
             with col1:
-                # Add a container with custom width
-                st.markdown("""
-                    <style>
-                        .image-container {
-                            max-width: 400px;
-                            margin: auto;
-                        }
-                    </style>
-                """, unsafe_allow_html=True)
-                
-                with st.container():
-                    st.markdown('<div class="image-container">', unsafe_allow_html=True)
-                    st.image(image, caption="Uploaded Fingerprint", width=400)
-                    st.markdown('</div>', unsafe_allow_html=True)
+                st.image(image, caption="Fingerprint", width=200)
             
             # Make prediction
-            with st.spinner('Analyzing fingerprint...'):
+            with st.spinner('Analyzing...'):
                 processed_image = preprocess_image(image)
                 prediction = model.predict(processed_image)
-                
                 blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
                 result = blood_groups[np.argmax(prediction)]
                 confidence = float(np.max(prediction) * 100)
                 
-                # Display prediction results
+                # Enhanced prediction display
                 with col2:
                     st.markdown(f"""
-                    <div class="success">
-                        <h2 style="color: #00FF00;">Prediction Results</h2>
-                        <h3>Blood Group: {result}</h3>
-                        <p>Confidence: {confidence:.2f}%</p>
+                    <div class="success" style='text-align: center;'>
+                        <h2 style='color: #FF0000; margin: 0;'>Blood Group: {result}</h2>
+                        <div style='font-size: 0.9rem; color: #FFB6B6;'>Confidence: {confidence:.1f}%</div>
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    # Progress bar for confidence
                     st.progress(confidence/100.0)
                     
-                    # Display probability distribution
-                    st.subheader("Probability Distribution")
-                    probs = prediction[0].astype(float)
-                    for bg, prob in zip(blood_groups, probs):
-                        st.progress(prob)
-                        st.write(f"{bg}: {prob*100:.2f}%")
-        
+                    # Compact probability distribution
+                    with st.expander("Detailed Analysis"):
+                        probs = prediction[0].astype(float)
+                        for bg, prob in zip(blood_groups, probs):
+                            col1, col2 = st.columns([1, 4])
+                            with col1:
+                                st.markdown(f"<div style='color: #FFB6B6;'>{bg}:</div>", unsafe_allow_html=True)
+                            with col2:
+                                st.progress(prob)
+                                st.markdown(f"<div style='font-size: 0.8rem; color: #FFB6B6; text-align: right;'>{prob*100:.1f}%</div>", unsafe_allow_html=True)
+
         except Exception as e:
-            st.error(f"Error processing image: {str(e)}")
-            st.info("Please ensure you upload a valid fingerprint image in BMP, JPG, or PNG format.")
+            st.error(f"Error: {str(e)}")
 
 if __name__ == "__main__":
     main()

@@ -1,34 +1,16 @@
 # Virtual Environment
 venv/
-env/
-
-# Python cache files
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-
-# Model files (if too large)
-# Uncomment if you don't want to include the trained model
-# models/*.h5
-
-# Dataset
-# Uncomment if you don't want to include the dataset
-# data/dataset_blood_group/
-
-# IDE specific files
+# IDE
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# Environment variables
-.env
-
-# System files
+# Temporary files
+*.log
 .DS_Store
 Thumbs.db
+
+# Keep model files in LFS
+# models/*.h5

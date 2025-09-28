@@ -17,8 +17,15 @@ This project uses a ResNet50-based deep learning model to analyze fingerprint pa
 
 1. **Clone or Download Project**
 ```batch
-git clone <repository-url>
-cd bloodgroup_detection
+# Install Git LFS first
+git lfs install
+
+# Clone repository with LFS support
+git clone https://github.com/Nithin3302/BloodGroup-Detection.git
+cd BloodGroup-Detection
+
+# Pull LFS files
+git lfs pull
 ```
 
 2. **Set Up Virtual Environment**
@@ -34,32 +41,25 @@ venv\Scripts\activate
 3. **Install Dependencies**
 ```batch
 # Ensure you're in the project directory
-cd C:\Users\YourUsername\Projects\bloodgroup_detection
+```C:\Users\YourUsername\Projects\bloodgroup_detection
 
-# Install specific numpy version first
+## 📁 Project Structurey version first
 pip install numpy==1.23.5
-
-# Install remaining dependencies
-pip install -r requirements.txt
 ```
-
-## 📁 Project Structure
-
-```
-bloodgroup_detection/
-├── data/
+bloodgroup_detection/ependencies
+├── data/ll -r requirements.txt
 │   └── dataset_blood_group/    # Dataset folder
 │       ├── A+/
-│       ├── A-/
+│       ├── A-/tructure
 │       ├── B+/
 │       ├── B-/
-│       ├── AB+/
+│       ├── AB+/tion/
 │       ├── AB-/
-│       ├── O+/
+│       ├── O+/_blood_group/    # Dataset folder
 │       └── O-/
-├── models/
+├── models/ A-/
 │   └── blood_group_model.h5    # Trained model
-├── src/
+├── src/├── B-/
 │   ├── app.py                  # Streamlit interface
 │   ├── predict.py              # Prediction logic
 │   ├── train.py               # Training script
@@ -67,14 +67,18 @@ bloodgroup_detection/
 │   ├── model.py               # Model architecture
 │   └── utils.py               # Helper functions
 ├── static/
-│   └── model_performance.png   # Performance graphs
-├── requirements.txt
-└── README.md
-```
-
+│   └── model_performance.png   # Performance graphse
+├── requirements.txt            # Prediction logic
+└── README.md.py               # Training script
+``` ├── data_processing.py     # Data utilities
+│   ├── model.py               # Model architecture
+## 🚀 Running the Application  # Helper functions
+├── static/
+1. **Train Model** (optional if model exists) 
+- streamlit run src/app.py    
+- ctrl + C in terminal to exit
 ## 🚀 Running the Application
 
 1. **Train Model** (optional if model exists)
 - streamlit run src/app.py    
 - ctrl + C in terminal to exit
-```

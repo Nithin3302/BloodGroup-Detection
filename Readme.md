@@ -104,4 +104,4 @@ streamlit run src/app.py
 - Memory Usage: ~2GB minimum during prediction
 - Storage: ~500MB for model and dependencies
 
-For any issues or questions, please open an issue in the repository.
+
